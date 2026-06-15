@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OncoRuta Mujer Inteligente — INEN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose: #C0185A;
+  --rose-l: #F5E6ED;
+  --rose-m: #E8A0BC;
+  --teal: #0F6E56;
+  --teal-l: #E0F2F1;
+  --teal-m: #5DCAA5;
+  --amber: #854F0B;
+  --amber-l: #FFF8E1;
+  --purple: #3C3489;
+  --purple-l: #EEEDFE;
+  --gray: #444441;
+  --gray-l: #F1EFE8;
+  --gray-m: #888780;
+  --white: #FFFFFF;
+  --text: #1A1A1A;
+  --text-muted: #5F5E5A;
+  --border: rgba(0,0,0,0.1);
+  --radius: 10px;
+  --font-size: 1rem;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', system-ui, sans-serif; background: #F5F4F0; color: var(--text); min-height: 100vh; font-size: var(--font-size); }
+
+/* FONT SIZE CONTROL */
+body.font-sm { --font-size: 0.875rem; }
+body.font-md { --font-size: 1rem; }
+body.font-lg { --font-size: 1.15rem; }
+body.font-xl { --font-size: 1.3rem; }
+
+/* ── TOPBAR ── */
+.topbar { background: var(--rose); padding: 0 14px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.topbar-brand { display: flex; align-items: center; gap: 8px; }
+.topbar-logo { width: 30px; height: 30px; background: rgba(255,255,255,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.topbar-logo svg { width: 16px; height: 16px; fill: white; }
+.topbar-name { color: white; font-size: 14px; font-weight: 600; }
+.topbar-sub { color: rgba(255,255,255,0.7); font-size: 10px; }
+.topbar-right { display: flex; align-items: center; gap: 5px; }
+
+/* Accessibility buttons */
+.acc-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; transition: background 0.15s; }
+.acc-btn:hover, .acc-btn.active { background: rgba(255,255,255,0.3); }
+.acc-btn.lang-active { background: white; color: var(--rose); border-color: white; font-weight: 700; font-size: 11px; }
+.acc-btn-wa { background: #25D366; color: white; border: none; border-radius: 8px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+
+/* Font size popup */
+.font-popup { position: absolute; top: 58px; right: 14px; background: white; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); padding: 10px; display: none; z-index: 200; min-width: 140px; }
+.font-popup.open { display: block; }
+.font-popup-title { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+.font-size-btns { display: flex; gap: 6px; }
+.font-size-btn { flex: 1; border: 1px solid var(--border); border-radius: 6px; padding: 6px; font-family: inherit; cursor: pointer; background: white; color: var(--text); font-weight: 500; transition: all 0.1s; }
+.font-size-btn.active { background: var(--rose-l); border-color: var(--rose); color: var(--rose); }
+
+/* ── NAV BOTTOM ── */
+.nav-bottom { background: white; border-top: 0.5px solid var(--border); display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 0 8px; cursor: pointer; border: none; background: none; color: var(--gray-m); font-size: 9px; font-family: inherit; transition: color 0.15s; position: relative; }
+.nav-item.active { color: var(--rose); }
+.nav-item svg { width: 21px; height: 21px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.nav-dot { width: 5px; height: 5px; background: var(--rose); border-radius: 50%; position: absolute; top: 6px; right: calc(50% - 14px); }
+
+/* ── MAIN ── */
+.main { padding: 14px 14px 100px; max-width: 480px; margin: 0 auto; }
+
+/* ── SCREENS ── */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── GREETING ── */
+.greeting-card { background: linear-gradient(135deg, var(--rose) 0%, #8B0D3A 100%); border-radius: 16px; padding: 18px; margin-bottom: 14px; color: white; }
+.greeting-badge { background: rgba(255,255,255,0.2); border-radius: 20px; padding: 3px 10px; font-size: 11px; display: inline-block; margin-bottom: 6px; }
+.greeting-name { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+.greeting-sub { font-size: 13px; opacity: 0.85; line-height: 1.5; }
+.greeting-stats { display: flex; gap: 8px; margin-top: 12px; }
+.g-stat { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 7px 10px; flex: 1; text-align: center; }
+.g-stat-val { font-size: 17px; font-weight: 600; }
+.g-stat-lbl { font-size: 9px; opacity: 0.8; margin-top: 1px; }
+
+/* Quick access buttons on home screen */
+.quick-access { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.qa-btn { background: white; border: 0.5px solid var(--border); border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 9px; cursor: pointer; transition: border-color 0.15s; }
+.qa-btn:hover { border-color: var(--rose-m); }
+.qa-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 16px; }
+.qa-icon.cita { background: var(--rose-l); }
+.qa-icon.result { background: var(--teal-l); }
+.qa-icon.navi { background: var(--purple-l); }
+.qa-icon.psi { background: var(--amber-l); }
+.qa-label { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.qa-sub { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+
+/* WhatsApp quick bar */
+.wa-quick-bar { background: #25D366; border-radius: 10px; padding: 11px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.wa-quick-bar:hover { opacity: 0.92; }
+.wa-quick-icon { font-size: 22px; }
+.wa-quick-text { flex: 1; }
+.wa-quick-title { color: white; font-size: 13px; font-weight: 600; }
+.wa-quick-sub { color: rgba(255,255,255,0.85); font-size: 11px; margin-top: 1px; }
+.wa-quick-arrow { color: white; font-size: 16px; }
+
+/* ── PROGRESS RUTA ── */
+.section-title { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+.ruta-card { background: white; border-radius: var(--radius); border: 0.5px solid var(--border); padding: 14px; margin-bottom: 12px; }
+.ruta-steps { display: flex; align-items: center; margin-bottom: 12px; }
+.ruta-step { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; position: relative; }
+.ruta-step-circle { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; flex-shrink: 0; }
+.ruta-step.done .ruta-step-circle { background: var(--teal); color: white; }
+.ruta-step.current .ruta-step-circle { background: var(--rose); color: white; box-shadow: 0 0 0 3px rgba(192,24,90,0.2); }
+.ruta-step.pending .ruta-step-circle { background: var(--gray-l); color: var(--gray-m); }
+.ruta-step-label { font-size: 8px; color: var(--text-muted); text-align: center; line-height: 1.3; }
+.ruta-step.current .ruta-step-label { color: var(--rose); font-weight: 600; }
+.ruta-line { flex: 1; height: 2px; background: var(--gray-l); margin-bottom: 16px; }
+.ruta-line.done { background: var(--teal); }
+.ruta-status { background: var(--rose-l); border-radius: 8px; padding: 9px 12px; display: flex; align-items: center; gap: 9px; }
+.ruta-status-icon { width: 30px; height: 30px; background: var(--rose); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ruta-status-icon svg { width: 14px; height: 14px; stroke: white; fill: none; stroke-width: 2; }
+.ruta-status-text { font-size: 12px; color: var(--rose); font-weight: 500; line-height: 1.4; }
+.ruta-status-sub { font-size: 10px; color: #A0185A; margin-top: 2px; }
+
+/* ── CITA CARD ── */
+.cita-card { background: white; border-radius: var(--radius); border: 0.5px solid var(--border); padding: 14px; margin-bottom: 12px; }
+.cita-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.cita-tag { background: var(--amber-l); color: var(--amber); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+.cita-tag.ok { background: var(--teal-l); color: var(--teal); }
+.cita-fecha { font-size: 19px; font-weight: 600; }
+.cita-dia { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.cita-info { display: flex; flex-direction: column; gap: 7px; margin-bottom: 12px; }
+.cita-row { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; }
+.cita-row svg { width: 15px; height: 15px; stroke: var(--gray-m); fill: none; stroke-width: 1.5; flex-shrink: 0; margin-top: 1px; }
+.cita-row-text { color: var(--text); line-height: 1.4; }
+.cita-llevar { background: var(--gray-l); border-radius: 8px; padding: 9px 12px; margin-bottom: 12px; }
+.cita-llevar-title { font-size: 10px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 5px; }
+.cita-llevar-item { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+.cita-llevar-item::before { content: "•"; color: var(--rose); font-weight: 700; }
+.btn-primary { background: var(--rose); color: white; border: none; border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 600; width: 100%; cursor: pointer; font-family: inherit; transition: opacity 0.15s; }
+.btn-primary:hover { opacity: 0.9; }
+.btn-secondary { background: white; color: var(--rose); border: 1.5px solid var(--rose); border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 500; width: 100%; cursor: pointer; font-family: inherit; margin-top: 7px; }
+
+/* ── RESULTADO ── */
+.result-card { background: white; border-radius: var(--radius); border: 0.5px solid var(--border); padding: 14px; margin-bottom: 12px; }
+.result-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.result-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.result-icon.lab { background: var(--purple-l); }
+.result-icon.lab svg { stroke: var(--purple); }
+.result-icon.img { background: var(--teal-l); }
+.result-icon.img svg { stroke: var(--teal); }
+.result-icon svg { width: 19px; height: 19px; fill: none; stroke-width: 1.8; }
+.result-title { font-size: 14px; font-weight: 600; }
+.result-date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.result-explanation { background: var(--teal-l); border-radius: 8px; padding: 11px; margin-bottom: 10px; }
+.result-exp-label { font-size: 10px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.result-exp-text { font-size: 12px; color: #004D40; line-height: 1.6; }
+.result-action { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px; }
+.result-action strong { color: var(--rose); }
+.btn-download { background: var(--gray-l); color: var(--gray); border: none; border-radius: 8px; padding: 9px 12px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 7px; cursor: pointer; font-family: inherit; width: 100%; }
+.btn-download svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+
+/* ── ALERTAS ── */
+.alerta-card { border-radius: var(--radius); border: 0.5px solid var(--border); padding: 12px 14px; margin-bottom: 8px; display: flex; gap: 10px; align-items: flex-start; background: white; }
+.alerta-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.alerta-dot.urgente { background: #E24B4A; }
+.alerta-dot.info { background: var(--amber); }
+.alerta-dot.ok { background: var(--teal); }
+.alerta-body-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.alerta-body-text { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+.alerta-time { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+
+/* ── NAVEGADOR CARD (vista paciente) ── */
+.nav-card { background: var(--purple-l); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; border: 0.5px solid rgba(83,74,183,0.2); }
+.nav-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.nav-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--purple); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 13px; flex-shrink: 0; }
+.nav-name { font-size: 14px; font-weight: 600; color: var(--purple); }
+.nav-role { font-size: 11px; color: #534AB7; }
+.nav-message { font-size: 12px; color: var(--purple); line-height: 1.6; margin-bottom: 10px; }
+.btn-nav { background: var(--purple); color: white; border: none; border-radius: 8px; padding: 10px 14px; font-size: 13px; font-weight: 500; width: 100%; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 7px; }
+.btn-nav svg { width: 14px; height: 14px; stroke: white; fill: none; stroke-width: 2; }
+
+/* ── WHATSAPP MOCK ── */
+.wa-container { background: #E8DCCF; border-radius: var(--radius); padding: 12px; margin-bottom: 12px; }
+.wa-header { background: #0F6E56; padding: 9px 12px; display: flex; align-items: center; gap: 8px; margin: -12px -12px 12px; border-radius: var(--radius) var(--radius) 0 0; }
+.wa-header-avatar { width: 30px; height: 30px; background: rgba(255,255,255,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+.wa-header-name { color: white; font-size: 13px; font-weight: 600; }
+.wa-header-status { color: rgba(255,255,255,0.7); font-size: 10px; }
+.wa-bubble { max-width: 85%; padding: 8px 10px; border-radius: 10px; margin-bottom: 7px; font-size: 12px; line-height: 1.5; }
+.wa-bubble.bot { background: white; border-radius: 2px 10px 10px 10px; }
+.wa-bubble.user { background: #D9FDD3; border-radius: 10px 2px 10px 10px; margin-left: auto; }
+.wa-time { font-size: 9px; color: var(--gray-m); text-align: right; margin-top: 3px; }
+.wa-menu { background: white; border-radius: 10px; padding: 8px 10px; margin-bottom: 7px; }
+.wa-menu-item { font-size: 12px; color: #0F6E56; padding: 5px 0; cursor: pointer; display: flex; align-items: center; gap: 7px; border-bottom: 0.5px solid rgba(0,0,0,0.06); }
+.wa-menu-item:last-child { border-bottom: none; }
+.wa-menu-item::before { content: attr(data-n); font-weight: 700; color: var(--gray-m); font-size: 11px; width: 14px; }
+
+/* ── PANEL NAVEGADOR (staff) ── */
+.panel-header { background: var(--purple); border-radius: 12px; padding: 14px; margin-bottom: 12px; color: white; }
+.panel-h-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.panel-h-sub { font-size: 11px; opacity: 0.8; }
+.panel-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; margin-bottom: 12px; }
+.p-stat { background: white; border-radius: 8px; padding: 9px; text-align: center; border: 0.5px solid var(--border); }
+.p-stat-val { font-size: 19px; font-weight: 600; }
+.p-stat-lbl { font-size: 9px; color: var(--text-muted); margin-top: 2px; }
+.p-stat-val.green { color: #3B6D11; }
+.p-stat-val.amber { color: var(--amber); }
+.p-stat-val.red { color: #A32D2D; }
+.paciente-item { background: white; border-radius: var(--radius); border: 0.5px solid var(--border); padding: 10px 12px; margin-bottom: 7px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.paciente-item:hover { border-color: var(--purple); }
+.sem-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+.sem-dot.verde { background: #3B6D11; }
+.sem-dot.amarillo { background: var(--amber); box-shadow: 0 0 0 3px rgba(133,79,11,0.15); }
+.sem-dot.rojo { background: #A32D2D; box-shadow: 0 0 0 3px rgba(163,45,45,0.15); }
+.pac-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+.pac-avatar.a { background: var(--rose-l); color: var(--rose); }
+.pac-avatar.b { background: var(--amber-l); color: var(--amber); }
+.pac-avatar.c { background: var(--purple-l); color: var(--purple); }
+.pac-info { flex: 1; min-width: 0; }
+.pac-name { font-size: 13px; font-weight: 600; margin-bottom: 1px; }
+.pac-detail { font-size: 10px; color: var(--text-muted); }
+.pac-action { display: flex; gap: 5px; }
+.pac-btn { border: none; border-radius: 6px; padding: 5px 7px; font-size: 11px; cursor: pointer; font-family: inherit; font-weight: 500; }
+.pac-btn.call { background: var(--teal-l); color: var(--teal); }
+.pac-btn.msg { background: var(--purple-l); color: var(--purple); }
+.pac-btn.alert { background: #FFEBEE; color: #7F0000; }
+.pac-btn.hc { background: var(--rose-l); color: var(--rose); }
+.filtros { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
+.filtro-btn { background: white; border: 0.5px solid var(--border); border-radius: 20px; padding: 4px 11px; font-size: 11px; cursor: pointer; font-family: inherit; color: var(--text-muted); }
+.filtro-btn.active { background: var(--purple-l); color: var(--purple); border-color: rgba(83,74,183,0.3); font-weight: 600; }
+
+/* ── JORNADA NAVEGADOR ── */
+.jornada-item { background: white; border-radius: var(--radius); border: 0.5px solid var(--border); padding: 12px 14px; margin-bottom: 8px; }
+.jornada-time { font-size: 11px; font-weight: 700; color: var(--purple); margin-bottom: 4px; }
+.jornada-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+.jornada-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 4px; }
+.jornada-tool { font-size: 11px; color: var(--teal); background: var(--teal-l); border-radius: 5px; padding: 3px 8px; display: inline-block; }
+.impact-box { background: var(--teal-l); border: 0.5px solid rgba(15,110,86,0.25); border-radius: 10px; padding: 12px 14px; margin-top: 14px; }
+.impact-box-title { font-size: 12px; font-weight: 600; color: var(--teal); margin-bottom: 5px; }
+.impact-box-text { font-size: 12px; color: #004D40; line-height: 1.6; }
+
+/* ── HISTORIA CLINICA ── */
+.hc-section { background: white; border-radius: var(--radius); border: 0.5px solid var(--border); padding: 14px; margin-bottom: 12px; }
+.hc-section-title { font-size: 12px; font-weight: 700; color: var(--text); border-bottom: 1px solid var(--gray-l); padding-bottom: 7px; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+.hc-section-title svg { width: 15px; height: 15px; stroke: var(--rose); fill: none; stroke-width: 1.8; }
+.hc-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 5px 0; border-bottom: 0.5px solid #f0f0f0; font-size: 12px; gap: 10px; }
+.hc-row:last-child { border-bottom: none; }
+.hc-label { color: var(--text-muted); flex-shrink: 0; width: 110px; }
+.hc-value { color: var(--text); font-weight: 500; text-align: right; flex: 1; }
+.ref-item { background: var(--gray-l); border-radius: 8px; padding: 9px 11px; margin-bottom: 7px; }
+.ref-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+.ref-item-title { font-size: 12px; font-weight: 600; }
+.ref-item-tag { font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 600; }
+.ref-item-tag.origen { background: var(--teal-l); color: var(--teal); }
+.ref-item-tag.interna { background: var(--purple-l); color: var(--purple); }
+.ref-item-date { font-size: 11px; color: var(--text-muted); }
+.ref-item-desc { font-size: 11px; color: var(--text-muted); margin-top: 3px; line-height: 1.4; }
+.atencion-item { border-left: 3px solid var(--rose); padding: 8px 11px; margin-bottom: 8px; background: white; border-radius: 0 8px 8px 0; }
+.atencion-fecha { font-size: 10px; color: var(--gray-m); margin-bottom: 2px; }
+.atencion-titulo { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+.atencion-medico { font-size: 11px; color: var(--text-muted); }
+.atencion-nota { font-size: 11px; color: var(--text-muted); margin-top: 4px; font-style: italic; line-height: 1.4; }
+
+/* ── PSICOLOGIA ── */
+.psi-card { background: var(--amber-l); border: 0.5px solid rgba(133,79,11,0.2); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; }
+.psi-header { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+.psi-icon { width: 36px; height: 36px; background: var(--amber); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+.psi-title { font-size: 14px; font-weight: 600; color: var(--amber); }
+.psi-sub { font-size: 11px; color: #6B3D08; }
+.psi-cita-item { background: white; border-radius: 8px; padding: 9px 11px; margin-bottom: 7px; display: flex; justify-content: space-between; align-items: center; }
+.psi-cita-info { font-size: 12px; }
+.psi-cita-fecha { font-weight: 600; color: var(--text); }
+.psi-cita-tipo { font-size: 11px; color: var(--text-muted); }
+.psi-cita-status { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+.psi-cita-status.pendiente { background: var(--amber-l); color: var(--amber); }
+.psi-cita-status.ok { background: var(--teal-l); color: var(--teal); }
+.informe-item { background: white; border-radius: 8px; padding: 9px 11px; margin-bottom: 7px; display: flex; align-items: center; gap: 9px; }
+.informe-icon { width: 30px; height: 30px; background: var(--amber-l); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.informe-info { flex: 1; }
+.informe-title { font-size: 12px; font-weight: 600; }
+.informe-date { font-size: 10px; color: var(--text-muted); }
+
+/* ── NAVEGADORES INFO (vista paciente) ── */
+.navi-info-card { background: white; border-radius: var(--radius); border: 0.5px solid var(--border); padding: 14px; margin-bottom: 10px; }
+.navi-info-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.navi-info-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: white; flex-shrink: 0; }
+.navi-info-name { font-size: 14px; font-weight: 600; }
+.navi-info-role { font-size: 11px; color: var(--text-muted); }
+.navi-info-disponible { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; margin-top: 3px; }
+.navi-info-disponible.si { background: var(--teal-l); color: var(--teal); }
+.navi-info-disponible.no { background: var(--gray-l); color: var(--gray-m); }
+.navi-esp { font-size: 11px; color: var(--text-muted); margin-bottom: 9px; line-height: 1.5; }
+.navi-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 9px; }
+.navi-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--gray-l); color: var(--gray); }
+.navi-tag.qu { background: var(--teal-l); color: var(--teal); }
+
+/* ── TELEMEDICINA ── */
+.tele-card { background: white; border-radius: var(--radius); border: 0.5px solid var(--border); padding: 14px; margin-bottom: 12px; }
+.tele-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.tele-icon { width: 40px; height: 40px; background: var(--teal-l); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.tele-icon svg { width: 20px; height: 20px; stroke: var(--teal); fill: none; stroke-width: 1.8; }
+.tele-title { font-size: 14px; font-weight: 600; color: var(--teal); }
+.tele-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+.tele-disponible-badge { font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
+.tele-disponible-badge.si { background: var(--teal-l); color: var(--teal); }
+.tele-disponible-badge.no { background: var(--gray-l); color: var(--gray-m); }
+.tele-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-bottom: 11px; }
+.tele-requisitos { background: var(--gray-l); border-radius: 8px; padding: 9px 12px; margin-bottom: 11px; }
+.tele-requisitos-title { font-size: 10px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 5px; }
+.tele-req-item { font-size: 11px; color: var(--text-muted); display: flex; align-items: flex-start; gap: 6px; margin-bottom: 3px; line-height: 1.4; }
+.tele-req-item::before { content: "✓"; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+.tele-btn-row { display: flex; gap: 7px; }
+.btn-tele-primary { flex: 1; background: var(--teal); color: white; border: none; border-radius: 9px; padding: 11px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 7px; }
+.btn-tele-primary svg { width: 15px; height: 15px; stroke: white; fill: none; stroke-width: 2; }
+.btn-tele-primary:hover { opacity: 0.9; }
+.btn-tele-secondary { background: var(--teal-l); color: var(--teal); border: 1.5px solid var(--teal-m); border-radius: 9px; padding: 11px 13px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; }
+.tele-no-disponible { background: var(--gray-l); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: var(--text-muted); line-height: 1.5; text-align: center; }
+
+/* ── MAPA CONSULTORIO ── */
+.mapa-section { background: white; border-radius: var(--radius); border: 0.5px solid var(--border); margin-bottom: 12px; overflow: hidden; }
+.mapa-header { padding: 10px 14px 8px; display: flex; align-items: center; gap: 8px; }
+.mapa-header-icon { width: 28px; height: 28px; background: var(--rose-l); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+.mapa-header-icon svg { width: 14px; height: 14px; stroke: var(--rose); fill: none; stroke-width: 2; }
+.mapa-header-text { font-size: 12px; font-weight: 600; color: var(--text); }
+.mapa-header-sub { font-size: 10px; color: var(--text-muted); }
+.mapa-embed { width: 100%; height: 180px; border: none; display: block; }
+.mapa-footer { padding: 8px 14px 11px; display: flex; align-items: center; justify-content: space-between; }
+.mapa-footer-addr { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+.mapa-footer-btn { background: var(--rose-l); color: var(--rose); border: none; border-radius: 7px; padding: 6px 11px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; display: flex; align-items: center; gap: 5px; }
+.mapa-piso-tag { background: var(--rose); color: white; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; display: inline-block; margin-left: 6px; vertical-align: middle; }
+
+/* ── HISTORIAL INTERCONSULTAS ── */
+.historial-section { background: white; border-radius: var(--radius); border: 0.5px solid var(--border); padding: 14px; margin-bottom: 12px; }
+.historial-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.historial-title svg { width: 15px; height: 15px; stroke: var(--rose); fill: none; stroke-width: 1.8; }
+.historial-item { display: flex; gap: 10px; margin-bottom: 0; position: relative; }
+.historial-item:not(:last-child)::before { content: ''; position: absolute; left: 15px; top: 30px; bottom: -4px; width: 2px; background: var(--gray-l); }
+.historial-dot-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.historial-dot { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; position: relative; z-index: 1; }
+.historial-dot.completada { background: var(--teal-l); }
+.historial-dot.pendiente { background: var(--amber-l); }
+.historial-dot.interconsulta { background: var(--purple-l); }
+.historial-body { flex: 1; padding-bottom: 14px; }
+.historial-body:last-child { padding-bottom: 0; }
+.historial-fecha { font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
+.historial-tipo { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 1px; }
+.historial-medico { font-size: 11px; color: var(--text-muted); margin-bottom: 3px; }
+.historial-nota { font-size: 11px; color: var(--text-muted); line-height: 1.4; font-style: italic; }
+.historial-badge { font-size: 10px; padding: 1px 7px; border-radius: 10px; font-weight: 600; display: inline-block; margin-top: 3px; }
+.historial-badge.completada { background: var(--teal-l); color: var(--teal); }
+.historial-badge.pendiente { background: var(--amber-l); color: var(--amber); }
+.historial-badge.interconsulta { background: var(--purple-l); color: var(--purple); }
+
+/* ── INFO CITA PANEL ── */
+.cita-info-panel { background: var(--teal-l); border-radius: 8px; padding: 11px 13px; margin-bottom: 12px; border: 0.5px solid rgba(15,110,86,0.2); }
+.cita-info-panel-title { font-size: 10px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 7px; }
+.cita-info-panel-item { font-size: 12px; color: #004D40; line-height: 1.5; margin-bottom: 4px; display: flex; gap: 6px; }
+.cita-info-panel-item::before { content: "→"; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--text); color: white; border-radius: 20px; padding: 9px 18px; font-size: 12px; z-index: 300; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+.toast.show { opacity: 1; }
+
+/* ── LANG BANNER ── */
+.lang-banner { background: var(--teal-l); border-radius: 8px; padding: 9px 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 9px; border: 0.5px solid rgba(15,110,86,0.2); }
+.lang-banner-text { font-size: 12px; color: var(--teal); flex: 1; line-height: 1.4; }
+.lang-banner-btn { background: var(--teal); color: white; border: none; border-radius: 6px; padding: 5px 10px; font-size: 11px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+
+/* ── TABS ── */
+.tab-bar { display: flex; gap: 5px; margin-bottom: 12px; }
+.tab-btn { flex: 1; background: white; border: 0.5px solid var(--border); border-radius: 8px; padding: 8px 6px; font-size: 11px; font-weight: 500; cursor: pointer; font-family: inherit; color: var(--text-muted); text-align: center; }
+.tab-btn.active { background: var(--purple-l); color: var(--purple); border-color: rgba(60,52,137,0.3); font-weight: 600; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Panel access badge */
+.panel-access-badge { background: linear-gradient(135deg, var(--purple), #1a1060); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; color: white; display: flex; align-items: center; gap: 10px; }
+.panel-access-icon { font-size: 22px; }
+.panel-access-text { flex: 1; }
+.panel-access-title { font-size: 13px; font-weight: 600; }
+.panel-access-sub { font-size: 11px; opacity: 0.8; margin-top: 1px; }
+.panel-access-lock { font-size: 18px; opacity: 0.5; }
+</style>
+</head>
+<body class="font-md">
+
+<!-- TOPBAR -->
+<div class="topbar" style="position:relative">
+  <div class="topbar-brand">
+    <div class="topbar-logo">
+      <svg viewBox="0 0 24 24"><path d="M12 2C9.3 2 7 4.3 7 7c0 2 1.2 3.8 3 4.7V22l2-2 2 2V11.7c1.8-.9 3-2.7 3-4.7 0-2.7-2.3-5-5-5z"/></svg>
+    </div>
+    <div>
+      <div class="topbar-name">OncoRuta</div>
+      <div class="topbar-sub">INEN · Diagnóstico Oportuno</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <!-- Audio -->
+    <button class="acc-btn" title="Escuchar" onclick="toggleAudio()" id="btn-audio">🔊</button>
+    <!-- Font size -->
+    <button class="acc-btn" title="Tamaño de letra" onclick="toggleFontPopup()" id="btn-font">𝐀</button>
+    <!-- Lang ES -->
+    <button class="acc-btn lang-active" id="btn-es" onclick="setLang('es')" title="Español">ES</button>
+    <!-- Lang QU -->
+    <button class="acc-btn" id="btn-qu" onclick="setLang('qu')" title="Quechua">QU</button>
+    <!-- WhatsApp -->
+    <button class="acc-btn-wa" title="WhatsApp OncoRuta" onclick="goScreen('alertas'); showToast('Abriendo canal WhatsApp...')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.555 4.122 1.527 5.854L.057 23.882l6.197-1.625A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.894a9.876 9.876 0 01-5.031-1.378l-.361-.214-3.741.981.998-3.648-.235-.374A9.86 9.86 0 012.105 12C2.105 6.58 6.58 2.105 12 2.105S21.895 6.58 21.895 12 17.42 21.894 12 21.894z"/></svg>
+    </button>
+  </div>
+  <!-- Font popup -->
+  <div class="font-popup" id="font-popup">
+    <div class="font-popup-title">Tamaño de letra</div>
+    <div class="font-size-btns">
+      <button class="font-size-btn" onclick="setFont('sm')" id="fs-sm">A</button>
+      <button class="font-size-btn active" onclick="setFont('md')" id="fs-md" style="font-size:14px">A</button>
+      <button class="font-size-btn" onclick="setFont('lg')" id="fs-lg" style="font-size:17px">A</button>
+      <button class="font-size-btn" onclick="setFont('xl')" id="fs-xl" style="font-size:20px">A</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main-content">
+
+  <!-- ══ SCREEN: INICIO ══ -->
+  <div class="screen active" id="screen-inicio">
+
+    <!-- Greeting card -->
+    <div class="greeting-card">
+      <div class="greeting-badge" id="greeting-badge">Bienvenida, paciente activa</div>
+      <div class="greeting-name" id="greeting-name">Hola, María 👋</div>
+      <div class="greeting-sub" id="greeting-sub">Estás en la etapa de <strong style="color:white">Evaluación médica</strong>. Tu próxima cita es el martes.</div>
+      <div class="greeting-stats">
+        <div class="g-stat"><div class="g-stat-val">3</div><div class="g-stat-lbl" id="gs-citas">Citas completadas</div></div>
+        <div class="g-stat"><div class="g-stat-val">1</div><div class="g-stat-lbl" id="gs-siguiente">Siguiente paso</div></div>
+        <div class="g-stat"><div class="g-stat-val">0</div><div class="g-stat-lbl" id="gs-examenes">Exámenes pendientes</div></div>
+      </div>
+    </div>
+
+    <!-- Banner quechua -->
+    <div class="lang-banner" id="lang-banner" style="display:none">
+      <div class="lang-banner-text" id="lang-banner-text">¿Prefieres ver esta información en Quechua?</div>
+      <button class="lang-banner-btn" onclick="setLang('qu')">Sí, Quechua</button>
+    </div>
+
+    <!-- WhatsApp quick bar -->
+    <div class="wa-quick-bar" onclick="goScreen('alertas')">
+      <div class="wa-quick-icon">💬</div>
+      <div class="wa-quick-text">
+        <div class="wa-quick-title">Canal WhatsApp / SMS</div>
+        <div class="wa-quick-sub">Envía o recibe mensajes sin instalar nada</div>
+      </div>
+      <div class="wa-quick-arrow">›</div>
+    </div>
+
+    <!-- Accesos rápidos -->
+    <p class="section-title">Accesos rápidos</p>
+    <div class="quick-access">
+      <div class="qa-btn" onclick="goScreen('cita')">
+        <div class="qa-icon cita">📅</div>
+        <div><div class="qa-label">Mi cita</div><div class="qa-sub">Martes 17 jun</div></div>
+      </div>
+      <div class="qa-btn" onclick="goScreen('resultados')">
+        <div class="qa-icon result">🔬</div>
+        <div><div class="qa-label">Resultados</div><div class="qa-sub">1 nuevo</div></div>
+      </div>
+      <div class="qa-btn" onclick="goScreen('navegadores')">
+        <div class="qa-icon navi">👤</div>
+        <div><div class="qa-label">Navegadores</div><div class="qa-sub">INEN · Apoyo</div></div>
+      </div>
+      <div class="qa-btn" onclick="goScreen('psicologia')">
+        <div class="qa-icon psi">🧠</div>
+        <div><div class="qa-label">Psicología</div><div class="qa-sub">Citas e informes</div></div>
+      </div>
+    </div>
+
+    <!-- Mi Ruta -->
+    <p class="section-title" id="t-mi-ruta">Mi ruta de atención</p>
+    <div class="ruta-card">
+      <div class="ruta-steps" id="ruta-steps"></div>
+      <div class="ruta-status">
+        <div class="ruta-status-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg></div>
+        <div>
+          <div class="ruta-status-text" id="ruta-status-text">Próximo paso: Consulta con médico especialista</div>
+          <div class="ruta-status-sub" id="ruta-status-sub">Martes 17 de junio · 9:00 am · Piso 3</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navegador asignado -->
+    <div class="nav-card">
+      <div class="nav-card-header">
+        <div class="nav-avatar">LM</div>
+        <div>
+          <div class="nav-name">Lic. Laura Mendoza</div>
+          <div class="nav-role">Tu Navegador/a Oncológico/a · INEN</div>
+        </div>
+      </div>
+      <div class="nav-message" id="nav-message">Hola María, estoy aquí para ayudarte en cada paso. Si tienes alguna duda sobre tu cita del martes o necesitas apoyo con el traslado desde Ayacucho, escríbeme.</div>
+      <button class="btn-nav" onclick="showToast('Abriendo WhatsApp con tu navegador/a...')">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span id="btn-nav-text">Escribir a mi navegador/a</span>
+      </button>
+    </div>
+
+    <!-- Panel acceso restringido (solo staff) -->
+    <div class="panel-access-badge" onclick="goScreen('panel')">
+      <div class="panel-access-icon">🔐</div>
+      <div class="panel-access-text">
+        <div class="panel-access-title">Panel de Navegadores Oncológicos</div>
+        <div class="panel-access-sub">Solo navegadores, médicos y personal INEN</div>
+      </div>
+      <div class="panel-access-lock">🔒</div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: MI CITA ══ -->
+  <div class="screen" id="screen-cita">
+    <p class="section-title" id="t-proxima-cita">Próxima cita</p>
+    <div class="cita-card">
+      <div class="cita-header">
+        <div>
+          <div class="cita-fecha" id="cita-fecha">Martes 17 de junio</div>
+          <div class="cita-dia" id="cita-dia">9:00 am — en 3 días</div>
+        </div>
+        <div class="cita-tag" id="cita-tag">Próxima</div>
+      </div>
+      <div class="cita-info">
+        <div class="cita-row">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <div class="cita-row-text" id="cita-medico">Dr. Carlos Ríos — Oncología Médica</div>
+        </div>
+        <div class="cita-row">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div class="cita-row-text">Consultorio 308 <span class="mapa-piso-tag">Piso 3</span><br><span style="color:var(--rose);font-size:11px">INEN · Av. Angamos Este 2520, Surquillo</span></div>
+        </div>
+        <div class="cita-row">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <div class="cita-row-text">Duración estimada: 45 minutos</div>
+        </div>
+        <div class="cita-row">
+          <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+          <div class="cita-row-text">Motivo: Revisión de ecografía — decisión sobre biopsia</div>
+        </div>
+      </div>
+
+      <!-- Qué llevar -->
+      <div class="cita-llevar">
+        <div class="cita-llevar-title" id="t-llevar">Qué debes llevar</div>
+        <div class="cita-llevar-item" id="llevar-1">DNI original</div>
+        <div class="cita-llevar-item" id="llevar-2">Hoja de referencia del hospital de origen</div>
+        <div class="cita-llevar-item" id="llevar-3">Informe de ecografía mamaria (11 de junio)</div>
+        <div class="cita-llevar-item" id="llevar-4">Llegar 20 minutos antes para admisión en el piso 1</div>
+      </div>
+
+      <!-- Panel informativo: qué esperar -->
+      <div class="cita-info-panel">
+        <div class="cita-info-panel-title">¿Qué pasará en esta consulta?</div>
+        <div class="cita-info-panel-item">El Dr. Ríos revisará contigo el resultado de tu ecografía.</div>
+        <div class="cita-info-panel-item">Te explicará si es necesario hacer una biopsia (extracción de una pequeña muestra de tejido).</div>
+        <div class="cita-info-panel-item">Puedes traer a un familiar o cuidadora para acompañarte.</div>
+        <div class="cita-info-panel-item">Al salir recibirás indicaciones sobre el siguiente paso en tu ruta.</div>
+      </div>
+
+      <!-- Botón de problema logístico -->
+      <button class="btn-secondary" onclick="showToast('Tu navegador/a fue notificado/a. Te llamará para coordinar.')">Necesito ayuda para llegar a mi cita</button>
+    </div>
+
+    <!-- ── MAPA DEL CONSULTORIO ── -->
+    <div class="mapa-section">
+      <div class="mapa-header">
+        <div class="mapa-header-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div class="mapa-header-text">Cómo llegar al INEN</div>
+          <div class="mapa-header-sub">Consultorio 308 · Piso 3 · Oncología Médica</div>
+        </div>
+      </div>
+      <iframe
+        class="mapa-embed"
+        loading="lazy"
+        allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.4!2d-77.0192!3d-12.1097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c7f8e1c7b6e3%3A0x3a3b2b1b7b3b2b1b!2sInstituto+Nacional+de+Enfermedades+Neopl%C3%A1sicas+(INEN)!5e0!3m2!1ses!2spe!4v1718500000000!5m2!1ses!2spe"
+        title="Ubicación del INEN">
+      </iframe>
+      <div class="mapa-footer">
+        <div class="mapa-footer-addr">Av. Angamos Este 2520<br>Surquillo, Lima</div>
+        <button class="mapa-footer-btn" onclick="window.open('https://maps.google.com/?q=Instituto+Nacional+de+Enfermedades+Neoplasicas+INEN+Lima','_blank'); showToast('Abriendo en Google Maps...')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Abrir en Maps
+        </button>
+      </div>
+    </div>
+
+    <!-- ── TELEMEDICINA ── -->
+    <p class="section-title">Atención por videollamada</p>
+    <div class="tele-card">
+      <div class="tele-header">
+        <div class="tele-icon">
+          <svg viewBox="0 0 24 24"><path d="M15 10l4.553-2.069A1 1 0 0 1 21 8.82v6.36a1 1 0 0 1-1.447.889L15 14"/><rect x="1" y="6" width="15" height="12" rx="2"/></svg>
+        </div>
+        <div>
+          <div class="tele-title">Teleconsulta INEN <span class="tele-disponible-badge si">Disponible</span></div>
+          <div class="tele-sub">Consulta médica por videollamada · Sin salir de casa</div>
+        </div>
+      </div>
+      <p class="tele-desc">Si vives lejos o tienes dificultades para viajar a Lima, puedes solicitar que tu consulta sea por videollamada. Tu navegador/a coordinará con el médico si es posible para tu caso.</p>
+      <div class="tele-requisitos">
+        <div class="tele-requisitos-title">Lo que necesitas para la videollamada</div>
+        <div class="tele-req-item">Celular, tableta o computadora con cámara</div>
+        <div class="tele-req-item">Conexión a internet (WiFi o datos móviles)</div>
+        <div class="tele-req-item">Tener a la mano tus documentos e informes médicos</div>
+        <div class="tele-req-item">El enlace de videollamada te llegará por WhatsApp o SMS</div>
+      </div>
+      <div class="tele-btn-row">
+        <button class="btn-tele-primary" onclick="showToast('Solicitud enviada. Tu navegador/a confirmará en breve.')">
+          <svg viewBox="0 0 24 24"><path d="M15 10l4.553-2.069A1 1 0 0 1 21 8.82v6.36a1 1 0 0 1-1.447.889L15 14"/><rect x="1" y="6" width="15" height="12" rx="2"/></svg>
+          Solicitar teleconsulta
+        </button>
+        <button class="btn-tele-secondary" onclick="showToast('Abriendo WhatsApp para consultar con tu navegador/a...')">Consultar</button>
+      </div>
+    </div>
+
+    <!-- ── HISTORIAL DE INTERCONSULTAS ── -->
+    <div class="historial-section">
+      <div class="historial-title">
+        <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>
+        Historial de citas e interconsultas
+      </div>
+
+      <!-- Cita pendiente (próxima) -->
+      <div class="historial-item">
+        <div class="historial-dot-wrap">
+          <div class="historial-dot pendiente">📅</div>
+        </div>
+        <div class="historial-body">
+          <div class="historial-fecha">Martes 17 de junio de 2026 · 9:00 am</div>
+          <div class="historial-tipo">Consulta — Oncología Médica</div>
+          <div class="historial-medico">Dr. Carlos Ríos · Consultorio 308, Piso 3</div>
+          <div class="historial-nota">Revisión de ecografía. Decisión sobre biopsia core.</div>
+          <span class="historial-badge pendiente">Próxima</span>
+        </div>
+      </div>
+
+      <!-- Interconsulta psicología -->
+      <div class="historial-item">
+        <div class="historial-dot-wrap">
+          <div class="historial-dot interconsulta">🧠</div>
+        </div>
+        <div class="historial-body">
+          <div class="historial-fecha">Jueves 19 de junio de 2026 · 3:00 pm</div>
+          <div class="historial-tipo">Interconsulta — Psicología Oncológica</div>
+          <div class="historial-medico">Lic. Carla Vega · Unidad de Soporte Emocional</div>
+          <div class="historial-nota">Primera consulta. Derivada por Dra. Ana Torres por ansiedad anticipatoria.</div>
+          <span class="historial-badge interconsulta">Interconsulta</span>
+        </div>
+      </div>
+
+      <!-- Ecografía -->
+      <div class="historial-item">
+        <div class="historial-dot-wrap">
+          <div class="historial-dot completada">🔬</div>
+        </div>
+        <div class="historial-body">
+          <div class="historial-fecha">Miércoles 11 de junio de 2026 · 2:00 pm</div>
+          <div class="historial-tipo">Ecografía mamaria bilateral</div>
+          <div class="historial-medico">Dr. Marco Salas · Radiodiagnóstico INEN</div>
+          <div class="historial-nota">BI-RADS 4A. Imagen hipoecoica BD 1.2x0.9 cm. Informe disponible.</div>
+          <span class="historial-badge completada">Realizada</span>
+        </div>
+      </div>
+
+      <!-- Evaluación inicial -->
+      <div class="historial-item">
+        <div class="historial-dot-wrap">
+          <div class="historial-dot completada">👩‍⚕️</div>
+        </div>
+        <div class="historial-body">
+          <div class="historial-fecha">Miércoles 11 de junio de 2026 · 10:00 am</div>
+          <div class="historial-tipo">Evaluación inicial — Oncología Médica</div>
+          <div class="historial-medico">Dra. Ana Torres · Piso 3</div>
+          <div class="historial-nota">Examen físico. Se solicita ecografía bilateral e interconsulta a psicología.</div>
+          <span class="historial-badge completada">Realizada</span>
+        </div>
+      </div>
+
+      <!-- Análisis de sangre -->
+      <div class="historial-item">
+        <div class="historial-dot-wrap">
+          <div class="historial-dot completada">🩸</div>
+        </div>
+        <div class="historial-body">
+          <div class="historial-fecha">Martes 10 de junio de 2026 · 7:45 am</div>
+          <div class="historial-tipo">Toma de muestra — Análisis de sangre</div>
+          <div class="historial-medico">Tec. Ana Pineda · Laboratorio INEN</div>
+          <div class="historial-nota">Hemograma, perfil hepático, CA 15-3. Valores dentro del rango normal.</div>
+          <span class="historial-badge completada">Realizada</span>
+        </div>
+      </div>
+
+      <!-- Admisión -->
+      <div class="historial-item">
+        <div class="historial-dot-wrap">
+          <div class="historial-dot completada">🏥</div>
+        </div>
+        <div class="historial-body">
+          <div class="historial-fecha">Lunes 9 de junio de 2026 · 8:30 am</div>
+          <div class="historial-tipo">Admisión y apertura de historia clínica</div>
+          <div class="historial-medico">Admisión INEN · Navegador/a: Laura Mendoza</div>
+          <div class="historial-nota">Inscripción en OncoRuta. Canal SMS en Quechua activado.</div>
+          <span class="historial-badge completada">Realizada</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: RESULTADOS ══ -->
+  <div class="screen" id="screen-resultados">
+    <p class="section-title" id="t-resultados">Mis resultados</p>
+    <div class="result-card">
+      <div class="result-header">
+        <div class="result-icon img"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+        <div><div class="result-title" id="res1-title">Ecografía mamaria</div><div class="result-date" id="res1-date">Realizada el 11 de junio de 2026</div></div>
+      </div>
+      <div class="result-explanation">
+        <div class="result-exp-label" id="t-que-significa">¿Qué significa este resultado?</div>
+        <div class="result-exp-text" id="res1-exp">La ecografía encontró una zona en tu mama que necesita revisarse con más detalle. Esto no significa que sea cáncer todavía. El médico quiere hacer más exámenes para entender mejor qué es.</div>
+      </div>
+      <div class="result-action" id="res1-action">Tu próximo paso es la <strong>consulta del martes 17</strong>. El médico explicará este resultado y decidirá si necesitas una biopsia.</div>
+      <button class="btn-download" onclick="showToast('Descargando informe PDF...')">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span id="t-descargar">Descargar informe completo (PDF)</span>
+      </button>
+    </div>
+    <div class="result-card">
+      <div class="result-header">
+        <div class="result-icon lab"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0H5m4 0h4m6-8v8m0 0H9"/></svg></div>
+        <div><div class="result-title" id="res2-title">Análisis de sangre</div><div class="result-date" id="res2-date">Realizado el 10 de junio de 2026</div></div>
+      </div>
+      <div class="result-explanation">
+        <div class="result-exp-label" id="t-que-significa2">¿Qué significa este resultado?</div>
+        <div class="result-exp-text" id="res2-exp">Tus análisis de sangre están dentro de los valores normales. Esto es una buena señal para continuar con los exámenes de imagen.</div>
+      </div>
+      <button class="btn-download" onclick="showToast('Descargando informe PDF...')">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Descargar informe completo (PDF)
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: ALERTAS / WHATSAPP ══ -->
+  <div class="screen" id="screen-alertas">
+    <p class="section-title" id="t-notificaciones">Mis notificaciones</p>
+    <div class="alerta-card">
+      <div class="alerta-dot urgente"></div>
+      <div><div class="alerta-body-title" id="al1-title">Confirma tu cita del martes</div><div class="alerta-body-text" id="al1-text">Tu cita con el Dr. Carlos Ríos es el martes 17 a las 9:00 am. ¿Confirmas?</div><div class="alerta-time">Hoy, 8:00 am</div></div>
+    </div>
+    <div class="alerta-card">
+      <div class="alerta-dot info"></div>
+      <div><div class="alerta-body-title" id="al2-title">Tu resultado de ecografía está listo</div><div class="alerta-body-text" id="al2-text">Tu resultado ya está disponible. Puedes verlo en la sección Resultados o preguntarle a tu navegador/a.</div><div class="alerta-time">Ayer, 4:30 pm</div></div>
+    </div>
+    <div class="alerta-card">
+      <div class="alerta-dot ok"></div>
+      <div><div class="alerta-body-title" id="al3-title">Cita completada ✓</div><div class="alerta-body-text" id="al3-text">Tu cita del miércoles 11 quedó registrada. Tu navegador/a Laura actualizó tu ruta.</div><div class="alerta-time">Miércoles 11, 11:15 am</div></div>
+    </div>
+    <p class="section-title" id="t-canal-sms" style="margin-top:16px">Canal WhatsApp / SMS</p>
+    <div class="wa-container">
+      <div class="wa-header">
+        <div class="wa-header-avatar">🏥</div>
+        <div><div class="wa-header-name">OncoRuta INEN</div><div class="wa-header-status" id="wa-status">En línea · Español / Quechua</div></div>
+      </div>
+      <div id="wa-chat"></div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: HISTORIA CLÍNICA ══ -->
+  <div class="screen" id="screen-historia">
+    <p class="section-title">Interconsulta e Historia Clínica</p>
+
+    <!-- Tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="showTab('hc-datos', this)">Datos del paciente</button>
+      <button class="tab-btn" onclick="showTab('hc-refs', this)">Referencias</button>
+      <button class="tab-btn" onclick="showTab('hc-atenciones', this)">Atenciones</button>
+    </div>
+
+    <!-- Tab: Datos -->
+    <div class="tab-content active" id="hc-datos">
+      <div class="hc-section">
+        <div class="hc-section-title">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Datos personales
+        </div>
+        <div class="hc-row"><span class="hc-label">Nombre completo</span><span class="hc-value">María Antonia Quispe Huanca</span></div>
+        <div class="hc-row"><span class="hc-label">DNI</span><span class="hc-value">47823610</span></div>
+        <div class="hc-row"><span class="hc-label">Fecha de nacimiento</span><span class="hc-value">12/03/1974 (52 años)</span></div>
+        <div class="hc-row"><span class="hc-label">Lugar de origen</span><span class="hc-value">Ayacucho</span></div>
+        <div class="hc-row"><span class="hc-label">Idioma</span><span class="hc-value">Quechua / Español</span></div>
+        <div class="hc-row"><span class="hc-label">Contacto</span><span class="hc-value">+51 945 231 870</span></div>
+        <div class="hc-row"><span class="hc-label">Cuidadora</span><span class="hc-value">Ana Quispe (hija) · 922 541 310</span></div>
+      </div>
+      <div class="hc-section">
+        <div class="hc-section-title">
+          <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Diagnóstico y antecedentes
+        </div>
+        <div class="hc-row"><span class="hc-label">N.º de historia</span><span class="hc-value">HC-2026-0041823</span></div>
+        <div class="hc-row"><span class="hc-label">Motivo de consulta</span><span class="hc-value">Nódulo mamario derecho</span></div>
+        <div class="hc-row"><span class="hc-label">Estadío actual</span><span class="hc-value">En evaluación</span></div>
+        <div class="hc-row"><span class="hc-label">Etapa OncoRuta</span><span class="hc-value">2 — Evaluación médica</span></div>
+        <div class="hc-row"><span class="hc-label">Antec. familiares</span><span class="hc-value">Madre con Ca. mama (fallecida)</span></div>
+        <div class="hc-row"><span class="hc-label">Alergias</span><span class="hc-value">Ninguna conocida</span></div>
+        <div class="hc-row"><span class="hc-label">SIS activo</span><span class="hc-value">Sí · SIS-2026-4439</span></div>
+        <div class="hc-row"><span class="hc-label">Navegador/a asig.</span><span class="hc-value">Lic. Laura Mendoza</span></div>
+      </div>
+    </div>
+
+    <!-- Tab: Referencias -->
+    <div class="tab-content" id="hc-refs">
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;line-height:1.5">Referencias recibidas y generadas por el INEN para esta paciente.</p>
+      <div class="ref-item">
+        <div class="ref-item-header">
+          <span class="ref-item-title">Referencia de origen — Hospital Regional Ayacucho</span>
+          <span class="ref-item-tag origen">Origen</span>
+        </div>
+        <div class="ref-item-date">02 de junio de 2026</div>
+        <div class="ref-item-desc">Paciente referida por nódulo mamario palpable derecho de 2 meses de evolución. Ecografía realizada en origen: imagen hipoecoica 1.2 cm. Solicita evaluación por oncología mamaria.</div>
+      </div>
+      <div class="ref-item">
+        <div class="ref-item-header">
+          <span class="ref-item-title">Interconsulta interna — Psicología Oncológica</span>
+          <span class="ref-item-tag interna">Interna</span>
+        </div>
+        <div class="ref-item-date">11 de junio de 2026</div>
+        <div class="ref-item-desc">Derivada por Dra. Ana Torres. Paciente presenta ansiedad anticipatoria ante resultados. Se solicita evaluación psicológica y acompañamiento durante el proceso diagnóstico.</div>
+      </div>
+      <div class="ref-item">
+        <div class="ref-item-header">
+          <span class="ref-item-title">Referencia interna — Servicio Social</span>
+          <span class="ref-item-tag interna">Interna</span>
+        </div>
+        <div class="ref-item-date">09 de junio de 2026</div>
+        <div class="ref-item-desc">Paciente de provincia sin red de apoyo en Lima. Se coordina alojamiento temporal y apoyo con pasajes. Gestión activa por navegador/a oncológico/a.</div>
+      </div>
+    </div>
+
+    <!-- Tab: Atenciones -->
+    <div class="tab-content" id="hc-atenciones">
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;line-height:1.5">Historial cronológico de atenciones en el INEN.</p>
+      <div class="atencion-item">
+        <div class="atencion-fecha">09 de junio de 2026 · 8:30 am</div>
+        <div class="atencion-titulo">Admisión y apertura de historia clínica</div>
+        <div class="atencion-medico">Admisión INEN · Navegador/a: Laura Mendoza</div>
+        <div class="atencion-nota">Paciente inscrita en OncoRuta. Canal SMS en Quechua activado. Coordinación de hospedaje iniciada.</div>
+      </div>
+      <div class="atencion-item">
+        <div class="atencion-fecha">10 de junio de 2026 · 7:45 am</div>
+        <div class="atencion-titulo">Toma de muestra — Análisis de sangre</div>
+        <div class="atencion-medico">Laboratorio INEN · Tec. Ana Pineda</div>
+        <div class="atencion-nota">Hemograma, perfil hepático, CA 15-3. Resultados disponibles el mismo día. Valores dentro de rango normal.</div>
+      </div>
+      <div class="atencion-item">
+        <div class="atencion-fecha">11 de junio de 2026 · 10:00 am</div>
+        <div class="atencion-titulo">Evaluación inicial — Oncología Médica</div>
+        <div class="atencion-medico">Dra. Ana Torres · Oncología</div>
+        <div class="atencion-nota">Examen físico: nódulo 1.2 cm, BD, móvil, sin adenopatías. Se solicita ecografía mamaria bilateral y se genera interconsulta a psicología. Próxima cita: 17/06 con Dr. Ríos.</div>
+      </div>
+      <div class="atencion-item">
+        <div class="atencion-fecha">11 de junio de 2026 · 2:00 pm</div>
+        <div class="atencion-titulo">Ecografía mamaria bilateral</div>
+        <div class="atencion-medico">Radiodiagnóstico INEN · Dr. Marco Salas</div>
+        <div class="atencion-nota">Imagen hipoecoica BD 1.2x0.9 cm, BI-RADS 4A. Se recomienda biopsia core. Informe disponible en plataforma.</div>
+      </div>
+      <div class="atencion-item" style="border-left-color:var(--amber);opacity:0.7">
+        <div class="atencion-fecha">17 de junio de 2026 · 9:00 am — PENDIENTE</div>
+        <div class="atencion-titulo">Consulta con médico especialista</div>
+        <div class="atencion-medico">Dr. Carlos Ríos — Oncología Médica</div>
+        <div class="atencion-nota">Revisión de resultados de ecografía. Decisión sobre biopsia core. Cita pendiente de confirmación.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: PSICOLOGÍA ══ -->
+  <div class="screen" id="screen-psicologia">
+    <p class="section-title">Apoyo psicológico · INEN</p>
+    <div class="psi-card">
+      <div class="psi-header">
+        <div class="psi-icon">🧠</div>
+        <div><div class="psi-title">Psicología Oncológica</div><div class="psi-sub">INEN · Unidad de Soporte Emocional</div></div>
+      </div>
+      <p style="font-size:12px;color:#6B3D08;line-height:1.6;margin-bottom:10px">El equipo de Psicología Oncológica del INEN te acompaña durante todo el proceso diagnóstico y de tratamiento. Las citas son gratuitas y pueden coordinarse con tu navegador/a.</p>
+      <button class="btn-primary" style="background:var(--amber)" onclick="showToast('Tu navegador/a coordinará tu cita de psicología')">Solicitar cita de psicología</button>
+    </div>
+
+    <p class="section-title">Mis citas de psicología</p>
+    <div class="psi-cita-item">
+      <div class="psi-cita-info">
+        <div class="psi-cita-fecha">Jueves 19 de junio · 3:00 pm</div>
+        <div class="psi-cita-tipo">Primera consulta · Lic. Carla Vega</div>
+      </div>
+      <span class="psi-cita-status pendiente">Pendiente</span>
+    </div>
+    <div class="psi-cita-item" style="opacity:0.7">
+      <div class="psi-cita-info">
+        <div class="psi-cita-fecha">Miércoles 11 de junio · 4:00 pm</div>
+        <div class="psi-cita-tipo">Evaluación de ansiedad · Lic. Carla Vega</div>
+      </div>
+      <span class="psi-cita-status ok">Realizada</span>
+    </div>
+
+    <p class="section-title" style="margin-top:14px">Mis informes psicológicos</p>
+    <div class="informe-item">
+      <div class="informe-icon">📋</div>
+      <div class="informe-info">
+        <div class="informe-title">Evaluación psicológica inicial</div>
+        <div class="informe-date">11 de junio de 2026 · Lic. Carla Vega</div>
+      </div>
+      <button class="btn-download" style="width:auto;padding:6px 10px;font-size:11px" onclick="showToast('Descargando informe...')">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </button>
+    </div>
+
+    <div style="background:var(--teal-l);border-radius:10px;padding:12px 14px;margin-top:14px;border:0.5px solid rgba(15,110,86,0.2)">
+      <div style="font-size:12px;font-weight:600;color:var(--teal);margin-bottom:4px">🌸 Club de Mamas — Apoyo entre pares</div>
+      <div style="font-size:12px;color:#004D40;line-height:1.5">Carmen, sobreviviente de cáncer de mama, puede acompañarte en este proceso. Tu navegador/a puede conectarte con ella.</div>
+      <button class="btn-nav" style="margin-top:10px;background:var(--teal)" onclick="showToast('Tu navegador/a contactará a Carmen del Club de Mamas')">Conectar con el Club de Mamas</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: NAVEGADORES (vista paciente) ══ -->
+  <div class="screen" id="screen-navegadores">
+    <p class="section-title">Navegadores Oncológicos · INEN</p>
+    <div style="background:var(--purple-l);border-radius:10px;padding:12px 14px;margin-bottom:14px;border:0.5px solid rgba(60,52,137,0.2)">
+      <div style="font-size:13px;font-weight:600;color:var(--purple);margin-bottom:5px">¿Qué es un Navegador Oncológico?</div>
+      <div style="font-size:12px;color:#3C3489;line-height:1.6">El Navegador u Oncológica es la persona que garantiza que la tecnología llegue a todas las pacientes, incluyendo a quienes no pueden acceder solas al sistema digital. Es el rol más importante de la propuesta. Te acompañan, inscriben, dan seguimiento activo y coordinan con el equipo de salud.</div>
+    </div>
+
+    <p class="section-title">Tu navegador/a asignado/a</p>
+    <div class="navi-info-card">
+      <div class="navi-info-header">
+        <div class="navi-info-avatar" style="background:var(--purple)">LM</div>
+        <div>
+          <div class="navi-info-name">Lic. Laura Mendoza</div>
+          <div class="navi-info-role">Navegadora Oncológica · Servicio de Mama</div>
+          <span class="navi-info-disponible si">● Disponible ahora</span>
+        </div>
+      </div>
+      <div class="navi-esp">Especializada en acompañamiento a pacientes de provincia y en el manejo de barreras idiomáticas y geográficas. Más de 5 años en el INEN.</div>
+      <div class="navi-tags">
+        <span class="navi-tag qu">Quechua</span>
+        <span class="navi-tag">Traslados</span>
+        <span class="navi-tag">Hospedaje</span>
+        <span class="navi-tag">Trámites SIS</span>
+      </div>
+      <button class="btn-nav" onclick="showToast('Abriendo WhatsApp con Laura Mendoza...')">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Escribirle por WhatsApp
+      </button>
+    </div>
+
+    <p class="section-title" style="margin-top:10px">Equipo de Navegadores · INEN</p>
+    <div class="navi-info-card">
+      <div class="navi-info-header">
+        <div class="navi-info-avatar" style="background:var(--teal)">RP</div>
+        <div>
+          <div class="navi-info-name">Lic. Roberto Palomino</div>
+          <div class="navi-info-role">Navegador Oncológico · Servicio de Diagnóstico</div>
+          <span class="navi-info-disponible si">● Disponible</span>
+        </div>
+      </div>
+      <div class="navi-tags">
+        <span class="navi-tag">Resultados</span>
+        <span class="navi-tag">Biopsias</span>
+        <span class="navi-tag">Coordinación médica</span>
+      </div>
+    </div>
+    <div class="navi-info-card">
+      <div class="navi-info-header">
+        <div class="navi-info-avatar" style="background:var(--rose)">MC</div>
+        <div>
+          <div class="navi-info-name">Tec. María Condori</div>
+          <div class="navi-info-role">Navegadora Oncológica · Admisión</div>
+          <span class="navi-info-disponible no">● Fuera de turno</span>
+        </div>
+      </div>
+      <div class="navi-tags">
+        <span class="navi-tag qu">Quechua</span>
+        <span class="navi-tag qu">Aimara</span>
+        <span class="navi-tag">Admisión</span>
+        <span class="navi-tag">Captación</span>
+      </div>
+    </div>
+
+    <div style="background:var(--gray-l);border-radius:10px;padding:12px 14px;margin-top:4px">
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.5">Los navegadores también pueden vincularte con <strong style="color:var(--amber)">Psicología Oncológica</strong> y el <strong style="color:var(--teal)">Club de Mamas</strong>. Habla con tu navegador/a para más información.</div>
+      <button class="btn-secondary" style="margin-top:8px" onclick="goScreen('psicologia')">Ver Psicología Oncológica →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: PANEL NAVEGADORES (STAFF) ══ -->
+  <div class="screen" id="screen-panel">
+    <div class="panel-header">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+        <div class="panel-h-title">Panel Navegadores Oncológicos · INEN</div>
+        <span style="background:rgba(255,255,255,0.2);font-size:10px;padding:2px 8px;border-radius:10px">🔐 STAFF</span>
+      </div>
+      <div class="panel-h-sub">Lic. Laura Mendoza · Servicio de Mama · 14 junio 2026</div>
+    </div>
+
+    <!-- Tabs del panel -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="showTab('panel-pacientes', this)">Pacientes</button>
+      <button class="tab-btn" onclick="showTab('panel-jornada', this)">Jornada</button>
+      <button class="tab-btn" onclick="showTab('panel-hc', this)">Historia Clínica</button>
+    </div>
+
+    <!-- Tab pacientes -->
+    <div class="tab-content active" id="panel-pacientes">
+      <div class="panel-stats">
+        <div class="p-stat"><div class="p-stat-val green">18</div><div class="p-stat-lbl">En ruta 🟢</div></div>
+        <div class="p-stat"><div class="p-stat-val amber">5</div><div class="p-stat-lbl">Riesgo 🟡</div></div>
+        <div class="p-stat"><div class="p-stat-val red">2</div><div class="p-stat-lbl">Alerta 🔴</div></div>
+      </div>
+      <div class="filtros">
+        <button class="filtro-btn active" onclick="filtrar(this,'todas')">Todas</button>
+        <button class="filtro-btn" onclick="filtrar(this,'provincia')">Provincia</button>
+        <button class="filtro-btn" onclick="filtrar(this,'quechua')">Quechua</button>
+        <button class="filtro-btn" onclick="filtrar(this,'riesgo')">En riesgo</button>
+      </div>
+      <p class="section-title">Pacientes activas (25)</p>
+
+      <div class="paciente-item">
+        <div class="sem-dot amarillo"></div>
+        <div class="pac-avatar a">MA</div>
+        <div class="pac-info">
+          <div class="pac-name">María A., 52 años</div>
+          <div class="pac-detail">Ayacucho · Quechua · Sin confirmar cita (+2 días)</div>
+        </div>
+        <div class="pac-action">
+          <button class="pac-btn call" onclick="showToast('Llamando a María...')">📞</button>
+          <button class="pac-btn msg" onclick="showToast('SMS enviado a María en Quechua')">💬</button>
+          <button class="pac-btn hc" onclick="showTab('panel-hc', document.querySelectorAll(\'.tab-btn\')[2]);showToast('Abriendo HC de María...')">HC</button>
+        </div>
+      </div>
+
+      <div class="paciente-item">
+        <div class="sem-dot rojo"></div>
+        <div class="pac-avatar b">JC</div>
+        <div class="pac-info">
+          <div class="pac-name">Juana C., 68 años</div>
+          <div class="pac-detail">Huancavelica · Cita vencida · Sin respuesta (5 días)</div>
+        </div>
+        <div class="pac-action">
+          <button class="pac-btn call" onclick="showToast('Llamando a Juana...')">📞</button>
+          <button class="pac-btn alert" onclick="showToast('Escalado a médico y asistenta social')">⚠️</button>
+          <button class="pac-btn hc" onclick="showToast('Abriendo HC de Juana...')">HC</button>
+        </div>
+      </div>
+
+      <div class="paciente-item">
+        <div class="sem-dot verde"></div>
+        <div class="pac-avatar c">RV</div>
+        <div class="pac-info">
+          <div class="pac-name">Rosa V., 38 años</div>
+          <div class="pac-detail">Lima · Confirmó cita · En ruta ✓</div>
+        </div>
+        <div class="pac-action">
+          <button class="pac-btn msg" onclick="showToast('Mensaje enviado a Rosa')">💬</button>
+          <button class="pac-btn hc" onclick="showToast('Abriendo HC de Rosa...')">HC</button>
+        </div>
+      </div>
+
+      <div class="paciente-item">
+        <div class="sem-dot amarillo"></div>
+        <div class="pac-avatar a">EF</div>
+        <div class="pac-info">
+          <div class="pac-name">Elena F., 45 años</div>
+          <div class="pac-detail">Cusco · Quechua · Resultado pendiente de revisar</div>
+        </div>
+        <div class="pac-action">
+          <button class="pac-btn call" onclick="showToast('Llamando a Elena...')">📞</button>
+          <button class="pac-btn msg" onclick="showToast('SMS enviado a Elena')">💬</button>
+          <button class="pac-btn hc" onclick="showToast('Abriendo HC de Elena...')">HC</button>
+        </div>
+      </div>
+
+      <div class="paciente-item">
+        <div class="sem-dot verde"></div>
+        <div class="pac-avatar b">LG</div>
+        <div class="pac-info">
+          <div class="pac-name">Luz G., 55 años</div>
+          <div class="pac-detail">Lima · Vista cuidadora activa (hija Ana) · En ruta ✓</div>
+        </div>
+        <div class="pac-action">
+          <button class="pac-btn msg" onclick="showToast('Mensaje enviado a Luz')">💬</button>
+          <button class="pac-btn hc" onclick="showToast('Abriendo HC de Luz...')">HC</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab jornada -->
+    <div class="tab-content" id="panel-jornada">
+      <div style="background:var(--purple-l);border-radius:10px;padding:12px 14px;margin-bottom:12px;border:0.5px solid rgba(60,52,137,0.2)">
+        <div style="font-size:12px;font-weight:600;color:var(--purple);margin-bottom:4px">Jornada típica del Navegador/a Oncológico/a</div>
+        <div style="font-size:11px;color:#3C3489;line-height:1.5">Garantiza que la tecnología llegue a todas las pacientes, especialmente quienes no pueden acceder solas al sistema digital.</div>
+      </div>
+
+      <div class="jornada-item">
+        <div class="jornada-time">7:30 am — Revisión del semáforo</div>
+        <div class="jornada-title">Revisión de riesgo de abandono</div>
+        <div class="jornada-desc">Abre el Panel y revisa el semáforo: verde (en ruta), amarillo (sin confirmar >5 días), rojo (cita vencida, sin respuesta).</div>
+        <span class="jornada-tool">Panel con filtros por vulnerabilidad, idioma, procedencia y días sin actividad</span>
+      </div>
+
+      <div class="jornada-item">
+        <div class="jornada-time">8:00 am — Captación</div>
+        <div class="jornada-title">Inscripción de pacientes nuevas</div>
+        <div class="jornada-desc">Intercepta pacientes nuevas en sala de espera y admisión. Pregunta por celular, idioma y acompañante, e inscribe en el sistema.</div>
+        <span class="jornada-tool">Inscripción en 5–8 minutos · Selecciona canal según perfil de la paciente</span>
+      </div>
+
+      <div class="jornada-item">
+        <div class="jornada-time">10:00 am — Seguimiento</div>
+        <div class="jornada-title">Llamadas a pacientes en alerta amarilla</div>
+        <div class="jornada-desc">Llama a pacientes que no confirmaron su cita de mañana, usando un guión de lenguaje simple y no clínico.</div>
+        <span class="jornada-tool">Botón de acción rápida · Sistema registra el resultado automáticamente</span>
+      </div>
+
+      <div class="jornada-item">
+        <div class="jornada-time">2:00 pm — Escalamiento</div>
+        <div class="jornada-title">Casos rojos al equipo clínico</div>
+        <div class="jornada-desc">Escala al médico tratante y a la asistenta social los casos rojos: pacientes con cita vencida y sin contacto.</div>
+        <span class="jornada-tool">Panel registra historial de intentos y notifica al equipo clínico</span>
+      </div>
+
+      <div class="jornada-item">
+        <div class="jornada-time">4:00 pm — Club de Mamas</div>
+        <div class="jornada-title">Derivación a acompañamiento entre pares</div>
+        <div class="jornada-desc">Deriva a pacientes recién diagnosticadas hacia Carmen (voluntaria) para acompañamiento entre pares.</div>
+        <span class="jornada-tool">Derivación registrada · Carmen recibe notificación por WhatsApp</span>
+      </div>
+
+      <div class="jornada-item">
+        <div class="jornada-time">5:00 pm — Cierre</div>
+        <div class="jornada-title">Resumen automático del día</div>
+        <div class="jornada-desc">El panel genera un resumen automático: pacientes contactadas, alertas resueltas y derivaciones.</div>
+        <span class="jornada-tool">Evidencia cuantitativa para reporte mensual INEN · Sin carga adicional</span>
+      </div>
+
+      <div class="impact-box">
+        <div class="impact-box-title">📊 Evidencia de impacto</div>
+        <div class="impact-box-text">Programas de navegación presencial en hospitales públicos de países de ingreso medio han reportado reducciones de hasta <strong>67% en el abandono del tratamiento</strong> y mejoras de <strong>17 puntos porcentuales en puntualidad diagnóstica</strong>, en contextos con barreras económicas, geográficas e idiomáticas similares a las del INEN.</div>
+      </div>
+    </div>
+
+    <!-- Tab historia clínica (staff) -->
+    <div class="tab-content" id="panel-hc">
+      <div style="background:var(--rose-l);border-radius:10px;padding:10px 12px;margin-bottom:12px;display:flex;align-items:center;gap:9px;border:0.5px solid rgba(192,24,90,0.2)">
+        <span style="font-size:18px">📋</span>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--rose)">Historia Clínica — Acceso staff INEN</div>
+          <div style="font-size:11px;color:#A0185A">Visualizando: María Antonia Quispe · HC-2026-0041823</div>
+        </div>
+      </div>
+      <div class="hc-section">
+        <div class="hc-section-title"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Estado clínico actual</div>
+        <div class="hc-row"><span class="hc-label">Semáforo OncoRuta</span><span class="hc-value" style="color:var(--amber);font-weight:700">🟡 Alerta amarilla</span></div>
+        <div class="hc-row"><span class="hc-label">Días sin actividad</span><span class="hc-value">2 días</span></div>
+        <div class="hc-row"><span class="hc-label">Última acción</span><span class="hc-value">SMS enviado (no respondido)</span></div>
+        <div class="hc-row"><span class="hc-label">Diagnóstico</span><span class="hc-value">BI-RADS 4A · Biopsia pendiente</span></div>
+        <div class="hc-row"><span class="hc-label">Psicología</span><span class="hc-value">Interconsulta activa · Cita 19/06</span></div>
+        <div class="hc-row"><span class="hc-label">Club de Mamas</span><span class="hc-value">No derivada aún</span></div>
+      </div>
+      <div class="hc-section">
+        <div class="hc-section-title"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Notas del navegador/a</div>
+        <div style="font-size:12px;color:var(--text-muted);line-height:1.6;padding:4px 0">
+          <div style="background:var(--gray-l);border-radius:7px;padding:9px 11px;margin-bottom:7px">
+            <div style="font-size:10px;color:var(--gray-m);margin-bottom:3px">Laura Mendoza · 11/06/2026 · 9:00 am</div>
+            Paciente llega de Ayacucho. Se coordina con Servicio Social para alojamiento en la Casa del Cáncer. Canal SMS en Quechua activado. Ansiedad visible. Se genera interconsulta a Psicología.
+          </div>
+          <div style="background:var(--gray-l);border-radius:7px;padding:9px 11px;">
+            <div style="font-size:10px;color:var(--gray-m);margin-bottom:3px">Laura Mendoza · 13/06/2026 · 10:30 am</div>
+            Intento de contacto #1 vía SMS. Sin respuesta. Se programará llamada el 14/06 antes de las 10 am. Cuidadora Ana disponible como contacto alternativo.
+          </div>
+        </div>
+        <button class="btn-primary" style="margin-top:8px;font-size:12px;padding:10px" onclick="showToast('Nota guardada en el sistema')">+ Agregar nota de seguimiento</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- BOTTOM NAV -->
+<nav class="nav-bottom">
+  <button class="nav-item active" id="nav-inicio" onclick="goScreen('inicio')">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Inicio</span>
+  </button>
+  <button class="nav-item" id="nav-cita" onclick="goScreen('cita')">
+    <svg viewBox="0 0 24 24" style="position:relative"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <div class="nav-dot"></div>
+    <span>Mi cita</span>
+  </button>
+  <button class="nav-item" id="nav-resultados" onclick="goScreen('resultados')">
+    <svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0H5m4 0h4m6-8v8m0 0H9"/></svg>
+    <span>Resultados</span>
+  </button>
+  <button class="nav-item" id="nav-historia" onclick="goScreen('historia')">
+    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    <span>Historia</span>
+  </button>
+  <button class="nav-item" id="nav-panel" onclick="goScreen('panel')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    <span>Panel</span>
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var lang = 'es';
+var audioOn = false;
+
+// ── i18n ──
+var i18n = {
+  es: {
+    'greeting-badge': 'Bienvenida, paciente activa',
+    'greeting-sub-maria': 'Estás en la etapa de Evaluación médica. Tu próxima cita es el martes.',
+    'greeting-sub-rosa': 'Estás en la etapa de Exámenes. Tu resultado de ecografía está listo.',
+    'greeting-sub-juana': 'Hola Juana. Tu hija Ana puede ayudarte a revisar tu ruta.',
+    'greeting-sub-ana': 'Vista de cuidadora activa. Estás siguiendo el proceso de tu mamá.',
+    'gs-citas': 'Citas completadas', 'gs-siguiente': 'Siguiente paso', 'gs-examenes': 'Exámenes pendientes',
+    't-mi-ruta': 'Mi ruta de atención',
+    't-proxima-cita': 'Próxima cita', 't-citas-prev': 'Citas anteriores',
+    't-resultados': 'Mis resultados', 't-notificaciones': 'Mis notificaciones', 't-canal-sms': 'Canal WhatsApp / SMS',
+    'ruta-status-maria': 'Próximo paso: Consulta con médico especialista',
+    'ruta-status-sub-maria': 'Martes 17 de junio · 9:00 am · Piso 3, Consultorios',
+    'nav-message-maria': 'Hola María, estoy aquí para ayudarte en cada paso. Si tienes alguna duda sobre tu cita del martes o necesitas apoyo con el traslado desde Ayacucho, escríbeme.',
+    'nav-message-rosa': 'Hola Rosa, tu resultado de ecografía está disponible. Puedes verlo en Resultados. Escríbeme si tienes dudas.',
+    'nav-message-juana': 'Hola Juana. Su hija Ana ya tiene acceso a su ruta. La llamaremos un día antes para recordarle su cita.',
+    'nav-message-ana': 'Hola Ana. Le avisaremos cada vez que haya novedades en la ruta de su mamá. Puedes confirmar citas por ella desde esta app.',
+    'btn-nav-text': 'Escribir a mi navegador/a',
+    't-llevar': 'Qué debes llevar',
+    'llevar-1': 'DNI original', 'llevar-2': 'Hoja de referencia del hospital de origen',
+    'llevar-3': 'Resultados de ecografía o mamografía si los tienes', 'llevar-4': 'Llegar 20 minutos antes para admisión',
+    't-que-significa': '¿Qué significa este resultado?', 't-que-significa2': '¿Qué significa este resultado?',
+    'res1-exp': 'La ecografía encontró una zona en tu mama que necesita revisarse con más detalle. Esto no significa que sea cáncer todavía. El médico quiere hacer más exámenes para entender mejor qué es.',
+    'res2-exp': 'Tus análisis de sangre están dentro de los valores normales. Esto es una buena señal para continuar con los exámenes de imagen.',
+    't-descargar': 'Descargar informe completo (PDF)',
+    'al1-title': 'Confirma tu cita del martes', 'al1-text': 'Tu cita con el Dr. Carlos Ríos es el martes 17 a las 9:00 am. ¿Confirmas?',
+    'al2-title': 'Tu resultado de ecografía está listo', 'al2-text': 'Tu resultado ya está disponible. Puedes verlo en la sección Resultados o preguntarle a tu navegador/a.',
+    'al3-title': 'Cita completada ✓', 'al3-text': 'Tu cita del miércoles 11 quedó registrada. Tu navegador/a Laura actualizó tu ruta.',
+    'wa-status': 'En línea · Español / Quechua',
+    'wa-msg1': 'Hola María 👋 Soy OncoRuta. ¿En qué puedo ayudarte hoy?',
+    'wa-opt-1': 'Ver mi próxima cita', 'wa-opt-2': 'Hablar con mi navegador/a', 'wa-opt-3': 'Entender mi resultado', 'wa-opt-4': 'Ayuda con traslado',
+    'wa-r1': 'Tu cita es el martes 17 de junio a las 9:00 am. Consultorio 308, Piso 3. Lleva tu DNI y hoja de referencia. ¿Confirmas?',
+    'wa-r2': 'Te voy a conectar con la Lic. Laura Mendoza, tu navegadora. Ella te llama en los próximos minutos.',
+    'wa-r3': 'Tu ecografía muestra una zona que necesita más revisión. No es diagnóstico de cáncer aún. El médico lo explicará el martes. ¿Tienes otra duda?',
+    'wa-r4': 'Entendido. Tu navegador/a puede ayudarte a coordinar hospedaje y transporte desde Ayacucho. ¿Quieres que te llame hoy?',
+    'lang-banner-text': '¿Prefieres ver esta información en Quechua?',
+    'cita-fecha': 'Martes 17 de junio', 'cita-dia': '9:00 am — en 3 días', 'cita-medico': 'Dr. Carlos Ríos — Oncología Médica',
+    'ruta-step-labels': ['Admisión','Evaluación','Exámenes','Diagnóstico','Tratamiento'],
+    'res1-title': 'Ecografía mamaria', 'res1-date': 'Realizada el 11 de junio de 2026',
+    'res2-title': 'Análisis de sangre', 'res2-date': 'Realizado el 10 de junio de 2026',
+    'res1-action': 'Tu próximo paso es la consulta del martes 17. El médico explicará este resultado y decidirá si necesitas una biopsia.'
+  },
+  qu: {
+    'greeting-badge': 'Allinllachu, paciente',
+    'greeting-sub-maria': 'Kunanqa Médico tapukuypi kashanki. Qayna citan martes pichay.',
+    'greeting-sub-rosa': 'Examen ñan rurasqa. Ecografía resultadoyki listuña.',
+    'greeting-sub-juana': 'Allinllachu Juana. Wawaqe Ana yanapasunki ñan chapanaypi.',
+    'greeting-sub-ana': 'Qhawaq kaq rikuchiy. Mamaykepa ñanta rikuchishanki.',
+    'gs-citas': 'Tukusqa citakuna', 'gs-siguiente': 'Qayna kama', 'gs-examenes': 'Suyasqa examenkuna',
+    't-mi-ruta': 'Ñan hap\'iriy atención',
+    't-proxima-cita': 'Qayna cita', 't-citas-prev': 'Pasaq citakuna',
+    't-resultados': 'Ñuqa resultadoykuna', 't-notificaciones': 'Willakuykunay', 't-canal-sms': 'WhatsApp / SMS kanal',
+    'ruta-status-maria': 'Qayna kama: Médico especialista tapukuy',
+    'ruta-status-sub-maria': 'Martes 17 junio · 9:00 am · Piso 3',
+    'nav-message-maria': 'Allinllachu María. Kanki sapallaykim yanapasqayki. Martes citaykimanta tapukuwankichu, chayrí Ayacuchomanta hamusqaykimanta yanapayta munanki chayqa, qillqarimaway.',
+    'nav-message-rosa': 'Allinllachu Rosa. Ecografía resultadoyki rikuchikunña. Resultados sección ukupi rikunki.',
+    'nav-message-juana': 'Allinllachu Juana. Wawaqe Ana ñanta rikunña. Citayki napaykuy kay punchaw ñawpaq waqyasqaykis.',
+    'nav-message-ana': 'Allinllachu Ana. Mamaykepa ñanpi imapas kaptinmi willasqayki. Paypa citanta qan ñawpaqmanta hap\'ikunki.',
+    'btn-nav-text': 'Navegador/ayman qillqariy',
+    't-llevar': 'Imatas apamunay',
+    'llevar-1': 'DNI originalniyki', 'llevar-2': 'Hoja referencia hospitalmanta',
+    'llevar-3': 'Ecografía / mamografía resultados sichus kanki', 'llevar-4': '20 minutosta ñawpaq chayamuy admisión raykun',
+    't-que-significa': '¿Imanatan kay resultado niq?', 't-que-significa2': '¿Imanatan kay resultado niq?',
+    'res1-exp': 'Ecografía mamaypi huk kaq tarisqa allin chanin qhawasqa kananpaq. Manan káncer sutiñachu. Médico astawan examenkunata ruranqam.',
+    'res2-exp': 'Yawarniyki análisis allin kanmi. Kay allin señalmi imagen examenkunaman qayna kanaykipaq.',
+    't-descargar': 'PDF informe descargay',
+    'al1-title': 'Martes citaykita hap\'ichiy', 'al1-text': 'Dr. Carlos Rioswan citayki martes 17 9:00 am. ¿Hamuyta atinki?',
+    'al2-title': 'Ecografía resultadoyki listuña', 'al2-text': 'Resultadoyki rikuchikunña. Resultados ukupi qhawari o navegador/aykiman tapuy.',
+    'al3-title': 'Cita tukusqa ✓', 'al3-text': 'Miércoles 11 citayki reqistrasqa. Navegador/a Lauran ñankita musuqyachisqa.',
+    'wa-status': 'Listuña · Español / Quechua',
+    'wa-msg1': 'Allinllachu María 👋 OncoRuta kani. ¿Imapi yanapasqayki?',
+    'wa-opt-1': 'Citayta qhaway', 'wa-opt-2': 'Navegador/ayman rimay', 'wa-opt-3': 'Resultadoyta entenderiy', 'wa-opt-4': 'Llaqtamanta yanapay',
+    'wa-r1': 'Citayki martes 17 junio 9:00 am. Consultorio 308, Piso 3. DNI apamuy. ¿Hamuyta atisqa?',
+    'wa-r2': 'Lic. Laura Mendoza, navegador/aykiwan tupachisqayki. Paymi waqyasunki.',
+    'wa-r3': 'Ecografíayki huk kaq rikuchiwan qhawasqa kananpaq. Manan káncer sutiñachu. Médico martes willasunkim.',
+    'wa-r4': 'Yachani. Navegador/a Ayacuchomanta lloq\'e llaqtaykipi yanapayta atinmi. ¿Kunan waqyasunqachu?',
+    'lang-banner-text': '¿Quechua simipi kay willakuykunata qhawaq munankichu?',
+    'cita-fecha': 'Martes 17 junio', 'cita-dia': '9:00 am — 3 punchaw qatiq', 'cita-medico': 'Dr. Carlos Ríos — Oncología Médica',
+    'ruta-step-labels': ['Hap\'iriy','Qhaway','Examen','Tapukuy','Hampi'],
+    'res1-title': 'Ecografía mamaria', 'res1-date': '11 junio 2026 rurasqa',
+    'res2-title': 'Análisis yawar', 'res2-date': '10 junio 2026 rurasqa',
+    'res1-action': 'Qayna kamayki martes 17 médico tapukuypi. Médico kay resultadota willasunkim.'
+  }
+};
+
+function t(key) { return (i18n[lang] && i18n[lang][key]) ? i18n[lang][key] : (i18n['es'][key] || key); }
+
+function setLang(l) {
+  lang = l;
+  document.getElementById('btn-es').classList.toggle('lang-active', l === 'es');
+  document.getElementById('btn-qu').classList.toggle('lang-active', l === 'qu');
+  applyTranslations();
+  showToast(l === 'qu' ? 'Quechua simipi rikuchikunña ✓' : 'Idioma cambiado a Español ✓');
+}
+
+function applyTranslations() {
+  var ids = ['gs-citas','gs-siguiente','gs-examenes','t-mi-ruta',
+    't-proxima-cita','t-citas-prev','t-resultados','t-notificaciones','t-canal-sms',
+    't-llevar','llevar-1','llevar-2','llevar-3','llevar-4',
+    't-que-significa','t-que-significa2','res1-exp','res2-exp','t-descargar',
+    'al1-title','al1-text','al2-title','al2-text','al3-title','al3-text',
+    'wa-status','btn-nav-text','cita-fecha','cita-dia','cita-medico',
+    'res1-title','res1-date','res2-title','res2-date','res1-action',
+    'lang-banner-text','greeting-badge'];
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) { var v = t(id); if (v) el.textContent = v; }
+  });
+  document.getElementById('greeting-name').textContent = 'Hola, María 👋';
+  var sub = t('greeting-sub-maria');
+  document.getElementById('greeting-sub').innerHTML = sub.replace('Evaluación médica', '<strong style="color:white">Evaluación médica</strong>');
+  document.getElementById('nav-message').textContent = t('nav-message-maria');
+  buildRutaSteps(1);
+  document.getElementById('ruta-status-text').textContent = t('ruta-status-maria');
+  document.getElementById('ruta-status-sub').textContent = t('ruta-status-sub-maria');
+  var lb = document.getElementById('lang-banner');
+  if (lb) lb.style.display = (lang === 'es') ? 'flex' : 'none';
+  resetWA();
+}
+
+function buildRutaSteps(currentStep) {
+  var labels = t('ruta-step-labels');
+  if (!Array.isArray(labels)) labels = ['Admisión','Evaluación','Exámenes','Diagnóstico','Tratamiento'];
+  var html = '';
+  for (var i = 0; i < labels.length; i++) {
+    var cls = i < currentStep ? 'done' : (i === currentStep ? 'current' : 'pending');
+    var icon = i < currentStep ? '✓' : (i + 1);
+    html += '<div class="ruta-step ' + cls + '"><div class="ruta-step-circle">' + icon + '</div><div class="ruta-step-label">' + labels[i] + '</div></div>';
+    if (i < labels.length - 1) html += '<div class="ruta-line' + (i < currentStep ? ' done' : '') + '"></div>';
+  }
+  document.getElementById('ruta-steps').innerHTML = html;
+}
+
+function goScreen(name) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+  var sc = document.getElementById('screen-' + name);
+  if (sc) sc.classList.add('active');
+  var ni = document.getElementById('nav-' + name);
+  if (ni) ni.classList.add('active');
+  else { document.getElementById('nav-inicio') && document.getElementById('nav-inicio').classList.remove('active'); }
+  window.scrollTo(0, 0);
+}
+
+function showTab(tabId, btn) {
+  var container = btn ? btn.closest('.tab-bar') : null;
+  if (container) {
+    container.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    var parent = container.parentElement;
+    parent.querySelectorAll('.tab-content').forEach(function(tc) { tc.classList.remove('active'); });
+  } else {
+    document.querySelectorAll('.tab-content').forEach(function(tc) { tc.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  }
+  var el = document.getElementById(tabId);
+  if (el) el.classList.add('active');
+}
+
+
+var waReplied = false;
+function waReply(n) {
+  if (waReplied) return;
+  waReplied = true;
+  var chat = document.getElementById('wa-chat');
+  var opts = [t('wa-opt-1'), t('wa-opt-2'), t('wa-opt-3'), t('wa-opt-4')];
+  var reps = [t('wa-r1'), t('wa-r2'), t('wa-r3'), t('wa-r4')];
+  var userBubble = document.createElement('div');
+  userBubble.className = 'wa-bubble user';
+  userBubble.innerHTML = n + '. ' + opts[n-1] + '<div class="wa-time">Ahora ✓✓</div>';
+  chat.appendChild(userBubble);
+  setTimeout(function() {
+    var botBubble = document.createElement('div');
+    botBubble.className = 'wa-bubble bot';
+    botBubble.innerHTML = reps[n-1] + '<div class="wa-time">Ahora ✓✓</div>';
+    chat.appendChild(botBubble);
+    botBubble.scrollIntoView({ behavior: 'smooth' });
+  }, 800);
+}
+
+function resetWA() {
+  waReplied = false;
+  var chat = document.getElementById('wa-chat');
+  var menu = '<div class="wa-menu">'
+    + '<div class="wa-menu-item" data-n="1" onclick="waReply(1)">' + t('wa-opt-1') + '</div>'
+    + '<div class="wa-menu-item" data-n="2" onclick="waReply(2)">' + t('wa-opt-2') + '</div>'
+    + '<div class="wa-menu-item" data-n="3" onclick="waReply(3)">' + t('wa-opt-3') + '</div>'
+    + '<div class="wa-menu-item" data-n="4" onclick="waReply(4)">' + t('wa-opt-4') + '</div>'
+    + '</div>';
+  chat.innerHTML = '<div class="wa-bubble bot">' + t('wa-msg1') + menu + '<div class="wa-time">8:00 ✓✓</div></div>';
+}
+
+function filtrar(btn, tipo) {
+  document.querySelectorAll('.filtro-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  var msgs = { 'riesgo': 'Mostrando 7 pacientes en riesgo', 'quechua': 'Mostrando 9 pacientes Quechua', 'provincia': 'Mostrando 14 pacientes de provincia', 'todas': 'Mostrando 25 pacientes' };
+  showToast(msgs[tipo] || 'Filtrando...');
+}
+
+function toggleFontPopup() {
+  document.getElementById('font-popup').classList.toggle('open');
+}
+
+function setFont(size) {
+  document.body.className = 'font-' + size;
+  document.querySelectorAll('.font-size-btn').forEach(function(b) { b.classList.remove('active'); });
+  var el = document.getElementById('fs-' + size);
+  if (el) el.classList.add('active');
+  document.getElementById('font-popup').classList.remove('open');
+  showToast('Tamaño de letra ajustado');
+}
+
+function toggleAudio() {
+  audioOn = !audioOn;
+  var btn = document.getElementById('btn-audio');
+  btn.style.background = audioOn ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.15)';
+  if (audioOn && window.speechSynthesis) {
+    var msg = new SpeechSynthesisUtterance('OncoRuta INEN. Plataforma de navegación oncológica. Bienvenida.');
+    msg.lang = lang === 'qu' ? 'es-PE' : 'es-PE';
+    window.speechSynthesis.speak(msg);
+    showToast('🔊 Audio activado');
+  } else {
+    window.speechSynthesis && window.speechSynthesis.cancel();
+    showToast('🔇 Audio desactivado');
+  }
+}
+
+// Close font popup on outside click
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#btn-font') && !e.target.closest('#font-popup')) {
+    document.getElementById('font-popup').classList.remove('open');
+  }
+});
+
+var toastTimer;
+function showToast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { el.classList.remove('show'); }, 2200);
+}
+
+applyTranslations();
+</script>
+</body>
+</html>
